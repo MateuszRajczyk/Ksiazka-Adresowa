@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1614191221 source:c:\users\mateusz\desktop\ksi¹¿ka adresowa\main.cpp
+	<iostream>
+	<windows.h>
+	<fstream>
+
+1618304847 source:c:\users\mateusz\desktop\projekt przysz³y programista\ksi¹¿ka adresowa\main.cpp
+	<iostream>
+	<windows.h>
+	<fstream>
+	<vector>
+	<sstream>
+	<conio.h>
+	<algorithm>
+
