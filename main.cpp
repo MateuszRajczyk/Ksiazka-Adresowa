@@ -764,25 +764,25 @@ int main()
                         }
                         else if(choice == '2')
                         {
-                            searchByName(recipients, idRecipient, givenIdUser);
+                            searchByName(recipients, idRecipient);
                             cout << endl;
                             system("pause");
                         }
                         else if(choice == '3')
                         {
-                            searchByLastName(recipients, idRecipient, givenIdUser);
+                            searchByLastName(recipients, idRecipient);
                             cout << endl;
                             system("pause");
                         }
                         else if(choice == '4')
                         {
-                            searchEveryone(recipients, idRecipient, givenIdUser);
+                            searchEveryone(recipients, idRecipient);
                             cout << endl;
                             system("pause");
                         }
                         else if(choice == '5')
                         {
-                            idRecipient = delateRecipient(recipients, idRecipient, givenIdUser);
+                            idRecipient = delateRecipient(recipients, idRecipient);
                             cout << endl;
                         }
                         else if(choice == '6')
@@ -796,7 +796,7 @@ int main()
                             cout << "6 - powrot do menu" << endl;
                             cout << "Twoj wybor: ";
 
-                            editRecipient(recipients, downloaded1, idRecipient, givenIdUser);
+                            editRecipient(recipients, downloaded1, idRecipient);
 
                             cout << endl;
                         }
