@@ -357,11 +357,14 @@ int delateRecipient(vector<Recipient>&recipients, int &idRecipient)
     cout<<"Podaj numer pozycji adresata na liscie do usuniecia: ";
     cin>>positionNumber;
 
+    int checkPositionNumber = 0;
     int f = 0;
     while(f < recipients.size())
     {
         if((positionNumber == recipients[f].idRecipient))
         {
+            checkPositionNumber++;
+
             cout << "Czy napewno chcesz usunac wybranego adresata?" << endl;
             cout << "Wcisnij klawisz 't' aby potwierdzic. W przeciwnym wypadku wcisnij dowolny inny klawisz" << endl;
             cout << "Twoj wybor: ";
@@ -377,6 +380,14 @@ int delateRecipient(vector<Recipient>&recipients, int &idRecipient)
             }
         }
         f++;
+    }
+
+    if (checkPositionNumber == 0)
+    {
+        cout << "Nie ma adresata o takim numerze" << endl;
+        system ("pause");
+
+        return 1;
     }
 
     string line, part;
@@ -459,11 +470,15 @@ int editRecipient (vector<Recipient>&recipients, Recipient downloaded1, int &idR
         cin >> positionNumber;
     }
 
+    int checkPositionNumber = 0;
+
     int a = 0;
     while(a < recipients.size())
     {
         if((positionNumber == recipients[a].idRecipient))
         {
+            checkPositionNumber++;
+
             if(editChoice == '1')
             {
                 cout << "Podaj nowe imie (lub imiona): ";
@@ -511,6 +526,14 @@ int editRecipient (vector<Recipient>&recipients, Recipient downloaded1, int &idR
             break;
         }
         a++;
+    }
+
+    if(checkPositionNumber == 0)
+    {
+        cout << "Nie ma adresata o takim numerze" << endl;
+        system ("pause");
+
+        return 1;
     }
 
     string line, part;
@@ -702,8 +725,7 @@ int main()
         cout << "1. Logowanie" << endl;
         cout << "2. Rejestracja" << endl;
         cout << "3. Zamknij program" << endl;
-        cout << "Twoj wybor:";
-
+        cout << "Twoj wybor: ";
 
         cin >> userChoice;
 
@@ -713,109 +735,149 @@ int main()
             string userName, userPassword;
             int idRecipient = 0;
 
-            cout << "Podaj nazwe uzytkownika: ";
-            cin.sync();
-            getline(cin,userName);
-
-            cout << "Podaj haslo: ";
-            cin.sync();
-            getline(cin,userPassword);
-
-            int i = 0;
-            while(i < idUser)
+            int c = 3;
+            while(c > 0)
             {
-                if((users[i].userName == userName) && (users[i].userPassword == userPassword))
+                cout << "Podaj nazwe uzytkownika: ";
+                cin.sync();
+                getline(cin,userName);
+
+                cout << "Podaj haslo: ";
+                cin.sync();
+                getline(cin,userPassword);
+
+                int checkData = 0;
+
+                int j = 0;
+                while(j < idUser)
                 {
-                    int givenIdUser = users[i].idUser;
+                   if((users[j].userName == userName) && (users[j].userPassword == userPassword))
+                   {
+                        checkData++;
+                   }
+                   j++;
+                }
 
-                    loadingFile.open("Adresaci.txt", ios::in);
-
-                    if(loadingFile.good() == false)
+                if(checkData == 0)
+                {
+                    if(c > 1)
                     {
-                        idRecipient = 0;
+                        cout << "Bledny login lub haslo" << endl;
+                        cout << "Pozostalo prob: " << c-1 << endl;
                     }
-                    else if(idRecipient == 0)
+                    else
                     {
-                        idRecipient = loadingPeople(recipients, downloaded1, idRecipient, givenIdUser);
+                        cout << "Bledny login lub haslo" << endl;
+                        cout << "Wykorzystano limit logowania. Odczekaj 20 sekund" << endl;
+                        Sleep(20000);
                     }
-
-                    loadingFile.close();
-
-                    while(true)
-                    {
-                        system("cls");
-
-                        cout << "1. Dodaj adresata" << endl;
-                        cout << "2. Wyszukaj po imieniu" << endl;
-                        cout << "3. Wyszukaj po nazwisku" << endl;
-                        cout << "4. Wyswietl wszystkich adresatow" << endl;
-                        cout << "5. Usun adresata" << endl;
-                        cout << "6. Edytuj adresata" << endl;
-                        cout << "7. Zmien haslo" << endl;
-                        cout << "8. Wyloguj sie" << endl;
-                        cout << "Twoj wybor: ";
-
-
-                        cin >> choice;
-
-                        if(choice == '1')
-                        {
-                            idRecipient = newPerson(recipients, downloaded1, idRecipient, givenIdUser);
-                        }
-                        else if(choice == '2')
-                        {
-                            searchByName(recipients, idRecipient);
-                            cout << endl;
-                            system("pause");
-                        }
-                        else if(choice == '3')
-                        {
-                            searchByLastName(recipients, idRecipient);
-                            cout << endl;
-                            system("pause");
-                        }
-                        else if(choice == '4')
-                        {
-                            searchEveryone(recipients, idRecipient);
-                            cout << endl;
-                            system("pause");
-                        }
-                        else if(choice == '5')
-                        {
-                            idRecipient = delateRecipient(recipients, idRecipient);
-                            cout << endl;
-                        }
-                        else if(choice == '6')
-                        {
-                            int positionNumber;
-                            cout << "1 - imie" << endl;
-                            cout << "2 - nazwisko" << endl;
-                            cout << "3 - numer telefonu" << endl;
-                            cout << "4 - email" << endl;
-                            cout << "5 - adres" << endl;
-                            cout << "6 - powrot do menu" << endl;
-                            cout << "Twoj wybor: ";
-
-                            editRecipient(recipients, downloaded1, idRecipient);
-
-                            cout << endl;
-                        }
-                        else if(choice == '7')
-                        {
-                            changePassword(users, givenIdUser);
-                        }
-                        else if(choice == '8')
-                        {
-                            break;
-                        }
-                    }
-                    break;
                 }
                 else
                 {
-                    i++;
+                    break;
                 }
+
+                c--;
+        }
+
+        int i = 0;
+        while(i < idUser)
+        {
+            if((users[i].userName == userName) && (users[i].userPassword == userPassword))
+            {
+
+                int givenIdUser = users[i].idUser;
+
+                loadingFile.open("Adresaci.txt", ios::in);
+
+                if(loadingFile.good() == false)
+                {
+                    idRecipient = 0;
+                }
+                else if(idRecipient == 0)
+                {
+                    idRecipient = loadingPeople(recipients, downloaded1, idRecipient, givenIdUser);
+                }
+
+                loadingFile.close();
+
+                while(true)
+                {
+                    system("cls");
+
+                    cout << "Zalogowany jako: " << users[i].userName << endl;
+                    cout << endl;
+                    cout << "1. Dodaj adresata" << endl;
+                    cout << "2. Wyszukaj po imieniu" << endl;
+                    cout << "3. Wyszukaj po nazwisku" << endl;
+                    cout << "4. Wyswietl wszystkich adresatow" << endl;
+                    cout << "5. Usun adresata" << endl;
+                    cout << "6. Edytuj adresata" << endl;
+                    cout << "7. Zmien haslo" << endl;
+                    cout << "8. Wyloguj sie" << endl;
+                    cout << "Twoj wybor: ";
+
+
+                    cin >> choice;
+
+                    if(choice == '1')
+                    {
+                        idRecipient = newPerson(recipients, downloaded1, idRecipient, givenIdUser);
+                    }
+                    else if(choice == '2')
+                    {
+                        searchByName(recipients, idRecipient);
+                        cout << endl;
+                        system("pause");
+                    }
+                    else if(choice == '3')
+                    {
+                        searchByLastName(recipients, idRecipient);
+                        cout << endl;
+                        system("pause");
+                    }
+                    else if(choice == '4')
+                    {
+                        searchEveryone(recipients, idRecipient);
+                        cout << endl;
+                        system("pause");
+                    }
+                    else if(choice == '5')
+                    {
+                        idRecipient = delateRecipient(recipients, idRecipient);
+                        cout << endl;
+                    }
+                    else if(choice == '6')
+                    {
+                        int positionNumber;
+                        cout << "1 - imie" << endl;
+                        cout << "2 - nazwisko" << endl;
+                        cout << "3 - numer telefonu" << endl;
+                        cout << "4 - email" << endl;
+                        cout << "5 - adres" << endl;
+                        cout << "6 - powrot do menu" << endl;
+                        cout << "Twoj wybor: ";
+
+                        editRecipient(recipients, downloaded1, idRecipient);
+
+                        cout << endl;
+                    }
+                    else if(choice == '7')
+                    {
+                        changePassword(users, givenIdUser);
+                    }
+                    else if(choice == '8')
+                    {
+                        break;
+                    }
+                }
+                break;
             }
+            else
+            {
+                i++;
+            }
+        }
         }
         else if(userChoice == '2')
         {
