@@ -133,6 +133,16 @@ int newPerson(vector<Recipient>&recipients, Recipient downloaded1, int &idRecipi
     return idRecipient;
 }
 
+void showRecipients (int &givenRecipient , vector<Recipient>&recipients)
+{
+    cout << recipients[givenRecipient].idRecipient << endl;
+    cout << recipients[givenRecipient].name << endl;
+    cout << recipients[givenRecipient].lastName << endl;
+    cout << recipients[givenRecipient].phoneNumber << endl;
+    cout << recipients[givenRecipient].email << endl;
+    cout << recipients[givenRecipient].address << endl;
+    cout << " " << endl;
+}
 void searchByName(vector<Recipient>&recipients, int &idRecipient)
 {
     string name;
@@ -149,13 +159,7 @@ void searchByName(vector<Recipient>&recipients, int &idRecipient)
     {
         if(recipients[j].name == name)
         {
-            cout << recipients[j].idRecipient << endl;
-            cout << recipients[j].name << endl;
-            cout << recipients[j].lastName << endl;
-            cout << recipients[j].phoneNumber << endl;
-            cout << recipients[j].email << endl;
-            cout << recipients[j].address << endl;
-            cout << " " << endl;
+            showRecipients(j, recipients);
             counter++;
         }
         j++;
@@ -182,13 +186,7 @@ void searchByLastName(vector<Recipient>&recipients,  int &idRecipient)
     {
         if(recipients[j].lastName == lastName)
         {
-            cout << recipients[j].idRecipient << endl;
-            cout << recipients[j].name << endl;
-            cout << recipients[j].lastName << endl;
-            cout << recipients[j].phoneNumber << endl;
-            cout << recipients[j].email << endl;
-            cout << recipients[j].address << endl;
-            cout << " " << endl;
+            showRecipients(j, recipients);
             counter++;
         }
         j++;
@@ -204,13 +202,7 @@ void searchEveryone(vector<Recipient>&recipients,  int &idRecipient)
     int k = 0;
     while(k < recipients.size())
     {
-        cout << recipients[k].idRecipient << endl;
-        cout << recipients[k].name << endl;
-        cout << recipients[k].lastName << endl;
-        cout << recipients[k].phoneNumber << endl;
-        cout << recipients[k].email << endl;
-        cout << recipients[k].address << endl;
-        cout << " " << endl;
+        showRecipients(k, recipients);
         k++;
     }
     if(recipients.size() == 0)
@@ -219,11 +211,47 @@ void searchEveryone(vector<Recipient>&recipients,  int &idRecipient)
     }
 }
 
+int readingIdRecipientsFromFile(int &allLines, int &idRecipient)
+{
+    fstream loadingFile;
+    string line, part;
+    int amountLines = 0;
+
+    loadingFile.open("Adresaci.txt", ios::in);
+
+    while(getline(loadingFile,line))
+    {
+        amountLines++;
+
+        if(amountLines == allLines)
+        {
+            for(int g = 0; g < (line.length()); g++)
+            {
+                if((int)line[g] != 124)
+                {
+                    part += charToString(line[g]);
+                }
+                else if((int)line[g] == 124)
+                {
+                    idRecipient = stringToInt(part);
+                    part.clear();
+                    break;
+                }
+            }
+        }
+    }
+
+    loadingFile.close();
+
+    return idRecipient;
+}
+
 int loadingPeople(vector<Recipient>&recipients, Recipient downloaded1, int &idRecipient, int &givenIdUser)
 {
     string line;
     string part;
     fstream loadingFile;
+    int allLines = 0;
 
     recipients.clear();
 
@@ -284,9 +312,11 @@ int loadingPeople(vector<Recipient>&recipients, Recipient downloaded1, int &idRe
         {
             recipients.push_back(downloaded1);
         }
-        idRecipient++;
+        allLines++;
     }
     loadingFile.close();
+
+    idRecipient = readingIdRecipientsFromFile(allLines, idRecipient);
 
     return idRecipient;
 }
@@ -337,20 +367,20 @@ int loadingUsers(vector<User>&users, User downloaded2, int &idUser)
     return idUser;
 }
 
-int delateRecipient(vector<Recipient>&recipients, int &idRecipient)
+int delateRecipient(vector<Recipient>&recipients, int &idRecipient, int &givenIdUser, Recipient &downloaded1 )
 {
     int positionNumber;
+
+    string line, part;
+
+    int idRecipientOldFile;
+
+    fstream oldFile, newFile;
 
     int k = 0;
     while(k < recipients.size())
     {
-        cout << recipients[k].idRecipient << endl;
-        cout << recipients[k].name << endl;
-        cout << recipients[k].lastName << endl;
-        cout << recipients[k].phoneNumber << endl;
-        cout << recipients[k].email << endl;
-        cout << recipients[k].address << endl;
-        cout << " " << endl;
+        showRecipients(k, recipients);
         k++;
     }
 
@@ -376,7 +406,44 @@ int delateRecipient(vector<Recipient>&recipients, int &idRecipient)
             {
                 recipients.erase(recipients.begin() + f);
 
-                idRecipient = recipients.size();
+                oldFile.open("Adresaci.txt", ios :: in);
+
+                newFile.open("Adresaci_tymczasowy.txt", ios::out | ios::app);
+
+                while(getline(oldFile,line))
+                {
+                    for(int g = 0; g < (line.length()); g++)
+                    {
+
+                        if((int)line[g] != 124)
+                        {
+                            part += charToString(line[g]);
+                        }
+                        else if(((int)line[g] == 124))
+                        {
+                            idRecipientOldFile = stringToInt(part);
+                            part.clear();
+
+                            if(idRecipientOldFile == positionNumber)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                newFile << line << endl;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                newFile.close();
+                oldFile.close();
+
+                remove ("Adresaci.txt");
+
+                rename("Adresaci_tymczasowy.txt", "Adresaci.txt");
+
             }
         }
         f++;
@@ -390,49 +457,9 @@ int delateRecipient(vector<Recipient>&recipients, int &idRecipient)
         return 1;
     }
 
-    string line, part;
+    loadingPeople(recipients, downloaded1, idRecipient, givenIdUser);
 
-    int idRecipientOldFile;
-
-    fstream oldFile, newFile;
-
-    oldFile.open("Adresaci.txt", ios :: in);
-
-    newFile.open("Adresaci_tymczasowy.txt", ios::out | ios::app);
-
-    while(getline(oldFile,line))
-    {
-        for(int g = 0; g < (line.length()); g++)
-        {
-
-            if((int)line[g] != 124)
-            {
-                part += charToString(line[g]);
-            }
-            else if(((int)line[g] == 124))
-            {
-                idRecipientOldFile = stringToInt(part);
-                part.clear();
-
-                if(idRecipientOldFile == positionNumber)
-                {
-                    break;
-                }
-                else
-                {
-                    newFile << line << endl;
-                    break;
-                }
-            }
-        }
-    }
-
-    newFile.close();
-    oldFile.close();
-
-    remove ("Adresaci.txt");
-
-    rename("Adresaci_tymczasowy.txt", "Adresaci.txt");
+    idRecipient = recipients.back().idRecipient;
 
     return idRecipient;
 }
@@ -456,13 +483,7 @@ int editRecipient (vector<Recipient>&recipients, Recipient downloaded1, int &idR
         int k = 0;
         while(k < recipients.size())
         {
-            cout << recipients[k].idRecipient << endl;
-            cout << recipients[k].name << endl;
-            cout << recipients[k].lastName << endl;
-            cout << recipients[k].phoneNumber << endl;
-            cout << recipients[k].email << endl;
-            cout << recipients[k].address << endl;
-            cout << " " << endl;
+            showRecipients(k, recipients);
             k++;
         }
 
@@ -681,6 +702,7 @@ void changePassword(vector<User>&users, int &givenIdUser)
     saveNewPassword.open("Uzytkownicy.txt", ios :: out);
 
     int givenPlace = 0;
+
     while(givenPlace < users.size())
     {
         saveNewPassword << users[givenPlace].idUser << "|" << users[givenPlace].userName << "|" << users[givenPlace].userPassword << "|" << endl;
@@ -689,19 +711,9 @@ void changePassword(vector<User>&users, int &givenIdUser)
     saveNewPassword.close();
 }
 
-int main()
+void mainLoadingUsers (User &downloaded2, vector<User>&users, int &idUser)
 {
-    vector<Recipient>recipients;
-
-    vector<User>users;
-
-    Recipient downloaded1;
-
-    User downloaded2;
-
     fstream loadingFile;
-
-    int idUser = 0;
 
     loadingFile.open("Uzytkownicy.txt", ios::in);
 
@@ -715,6 +727,206 @@ int main()
     }
 
     loadingFile.close();
+}
+
+void menuActionAtRecipients(vector<User>users, int i)
+{
+    system("cls");
+
+    cout << "Zalogowany jako: " << users[i].userName << endl;
+    cout << endl;
+    cout << "1. Dodaj adresata" << endl;
+    cout << "2. Wyszukaj po imieniu" << endl;
+    cout << "3. Wyszukaj po nazwisku" << endl;
+    cout << "4. Wyswietl wszystkich adresatow" << endl;
+    cout << "5. Usun adresata" << endl;
+    cout << "6. Edytuj adresata" << endl;
+    cout << "7. Zmien haslo" << endl;
+    cout << "8. Wyloguj sie" << endl;
+    cout << "Twoj wybor: ";
+}
+
+void menuEditRecipient ()
+{
+    system("cls");
+
+    cout << "1 - imie" << endl;
+    cout << "2 - nazwisko" << endl;
+    cout << "3 - numer telefonu" << endl;
+    cout << "4 - email" << endl;
+    cout << "5 - adres" << endl;
+    cout << "6 - powrot do menu" << endl;
+    cout << "Twoj wybor: ";
+}
+void mainLoadingRecipients (vector<Recipient>&recipients, Recipient &downloaded1, int &idRecipient, int &givenIdUser)
+{
+    fstream loadingFile;
+
+    loadingFile.open("Adresaci.txt", ios::in);
+
+    if(loadingFile.good() == false)
+    {
+        idRecipient = 0;
+    }
+    else if(idRecipient == 0)
+    {
+        idRecipient = loadingPeople(recipients, downloaded1, idRecipient, givenIdUser);
+    }
+
+    loadingFile.close();
+}
+
+void opctionsLoginRecipients (vector<User>&users, vector<Recipient>&recipients, Recipient &downloaded1, int &idRecipient, int &givenIdUser, char choice)
+{
+    if(choice == '1')
+    {
+        idRecipient = newPerson(recipients, downloaded1, idRecipient, givenIdUser);
+    }
+    else if(choice == '2')
+    {
+        searchByName(recipients, idRecipient);
+        cout << endl;
+        system("pause");
+    }
+    else if(choice == '3')
+    {
+        searchByLastName(recipients, idRecipient);
+        cout << endl;
+        system("pause");
+    }
+    else if(choice == '4')
+    {
+        searchEveryone(recipients, idRecipient);
+        cout << endl;
+        system("pause");
+    }
+    else if(choice == '5')
+    {
+        idRecipient = delateRecipient(recipients, idRecipient ,givenIdUser, downloaded1);
+        cout << endl;
+    }
+    else if(choice == '6')
+    {
+        int positionNumber;
+
+        menuEditRecipient();
+
+        editRecipient(recipients, downloaded1, idRecipient);
+
+        cout << endl;
+    }
+    else if(choice == '7')
+    {
+        changePassword(users, givenIdUser);
+    }
+}
+
+void loginSystem (vector<User>&users, vector<Recipient>&recipients, int &idUser, Recipient downloaded1, char &choice)
+{
+    string userName, userPassword;
+    int idRecipient = 0;
+    char logInAgain;
+
+    int c = 3;
+    while(c > 0)
+    {
+        cout << "Podaj nazwe uzytkownika: ";
+        cin.sync();
+        getline(cin,userName);
+
+        cout << "Podaj haslo: ";
+        cin.sync();
+        getline(cin,userPassword);
+
+        int checkData = 0;
+
+        int j = 0;
+        while(j < idUser)
+        {
+           if((users[j].userName == userName) && (users[j].userPassword == userPassword))
+           {
+                checkData++;
+           }
+           j++;
+        }
+
+        if(checkData == 0)
+        {
+            if(c > 1)
+            {
+                cout << "Bledny login lub haslo" << endl;
+                cout << "Pozostalo prob: " << c-1 << endl;
+                cout << "Jesli chcesz sprobowac jeszcze raz wcisnij 't'. Aby wyjsc do menu wcisnij dowolny inny klawisz." << endl;
+                cout << "Twoj wybor: ";
+                cin >> logInAgain;
+
+                if(logInAgain != 't')
+                {
+                    break;
+                }
+            }
+            else
+            {
+                cout << "Bledny login lub haslo" << endl;
+                cout << "Wykorzystano limit logowania. Odczekaj 20 sekund" << endl;
+                Sleep(20000);
+            }
+        }
+        else
+        {
+            break;
+        }
+
+        c--;
+    }
+
+    int i = 0;
+    while(i < idUser)
+    {
+        if((users[i].userName == userName) && (users[i].userPassword == userPassword))
+        {
+
+            int givenIdUser = users[i].idUser;
+
+            mainLoadingRecipients(recipients, downloaded1, idRecipient, givenIdUser);
+
+            while(true)
+            {
+                menuActionAtRecipients(users, i);
+
+                cin >> choice;
+
+                if(choice == '8')
+                {
+                    break;
+                }
+                else
+                {
+                    opctionsLoginRecipients(users, recipients, downloaded1, idRecipient, givenIdUser, choice);
+                }
+            }
+            break;
+        }
+        else
+        {
+            i++;
+        }
+    }
+}
+
+int main()
+{
+    vector<Recipient>recipients;
+
+    vector<User>users;
+
+    Recipient downloaded1;
+
+    User downloaded2;
+
+    int idUser = 0;
+
+    mainLoadingUsers(downloaded2, users, idUser);
 
     char choice;
     char userChoice;
@@ -731,153 +943,7 @@ int main()
 
         if(userChoice == '1')
         {
-            fstream loadingFile;
-            string userName, userPassword;
-            int idRecipient = 0;
-
-            int c = 3;
-            while(c > 0)
-            {
-                cout << "Podaj nazwe uzytkownika: ";
-                cin.sync();
-                getline(cin,userName);
-
-                cout << "Podaj haslo: ";
-                cin.sync();
-                getline(cin,userPassword);
-
-                int checkData = 0;
-
-                int j = 0;
-                while(j < idUser)
-                {
-                   if((users[j].userName == userName) && (users[j].userPassword == userPassword))
-                   {
-                        checkData++;
-                   }
-                   j++;
-                }
-
-                if(checkData == 0)
-                {
-                    if(c > 1)
-                    {
-                        cout << "Bledny login lub haslo" << endl;
-                        cout << "Pozostalo prob: " << c-1 << endl;
-                    }
-                    else
-                    {
-                        cout << "Bledny login lub haslo" << endl;
-                        cout << "Wykorzystano limit logowania. Odczekaj 20 sekund" << endl;
-                        Sleep(20000);
-                    }
-                }
-                else
-                {
-                    break;
-                }
-
-                c--;
-        }
-
-        int i = 0;
-        while(i < idUser)
-        {
-            if((users[i].userName == userName) && (users[i].userPassword == userPassword))
-            {
-
-                int givenIdUser = users[i].idUser;
-
-                loadingFile.open("Adresaci.txt", ios::in);
-
-                if(loadingFile.good() == false)
-                {
-                    idRecipient = 0;
-                }
-                else if(idRecipient == 0)
-                {
-                    idRecipient = loadingPeople(recipients, downloaded1, idRecipient, givenIdUser);
-                }
-
-                loadingFile.close();
-
-                while(true)
-                {
-                    system("cls");
-
-                    cout << "Zalogowany jako: " << users[i].userName << endl;
-                    cout << endl;
-                    cout << "1. Dodaj adresata" << endl;
-                    cout << "2. Wyszukaj po imieniu" << endl;
-                    cout << "3. Wyszukaj po nazwisku" << endl;
-                    cout << "4. Wyswietl wszystkich adresatow" << endl;
-                    cout << "5. Usun adresata" << endl;
-                    cout << "6. Edytuj adresata" << endl;
-                    cout << "7. Zmien haslo" << endl;
-                    cout << "8. Wyloguj sie" << endl;
-                    cout << "Twoj wybor: ";
-
-
-                    cin >> choice;
-
-                    if(choice == '1')
-                    {
-                        idRecipient = newPerson(recipients, downloaded1, idRecipient, givenIdUser);
-                    }
-                    else if(choice == '2')
-                    {
-                        searchByName(recipients, idRecipient);
-                        cout << endl;
-                        system("pause");
-                    }
-                    else if(choice == '3')
-                    {
-                        searchByLastName(recipients, idRecipient);
-                        cout << endl;
-                        system("pause");
-                    }
-                    else if(choice == '4')
-                    {
-                        searchEveryone(recipients, idRecipient);
-                        cout << endl;
-                        system("pause");
-                    }
-                    else if(choice == '5')
-                    {
-                        idRecipient = delateRecipient(recipients, idRecipient);
-                        cout << endl;
-                    }
-                    else if(choice == '6')
-                    {
-                        int positionNumber;
-                        cout << "1 - imie" << endl;
-                        cout << "2 - nazwisko" << endl;
-                        cout << "3 - numer telefonu" << endl;
-                        cout << "4 - email" << endl;
-                        cout << "5 - adres" << endl;
-                        cout << "6 - powrot do menu" << endl;
-                        cout << "Twoj wybor: ";
-
-                        editRecipient(recipients, downloaded1, idRecipient);
-
-                        cout << endl;
-                    }
-                    else if(choice == '7')
-                    {
-                        changePassword(users, givenIdUser);
-                    }
-                    else if(choice == '8')
-                    {
-                        break;
-                    }
-                }
-                break;
-            }
-            else
-            {
-                i++;
-            }
-        }
+            loginSystem(users,recipients, idUser, downloaded1, choice);
         }
         else if(userChoice == '2')
         {
