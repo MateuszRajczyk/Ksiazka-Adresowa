@@ -457,9 +457,7 @@ int delateRecipient(vector<Recipient>&recipients, int &idRecipient, int &givenId
         return 1;
     }
 
-    loadingPeople(recipients, downloaded1, idRecipient, givenIdUser);
-
-    idRecipient = recipients.back().idRecipient;
+    idRecipient = loadingPeople(recipients, downloaded1, idRecipient, givenIdUser);
 
     return idRecipient;
 }
