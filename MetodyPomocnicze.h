@@ -14,6 +14,8 @@ public:
     string wczytajLinie();
     string zamienPierwszaLitereNaDuzaAPozostaleNaMale(string tekst);
     bool czyPlikJestPusty(const string nazwaPliku);
+    char wczytajZnak();
+    int wczytajLiczbeCalkowita();
 };
 
 #endif

@@ -30,7 +30,14 @@ public:
     };
     void dodajAdresata();
     void wyswietlWszystkichAdresatow();
-
+    void wyszukajAdresatowPoImieniu();
+    void wyszukajAdresatowPoNazwisku();
+    void wyswietlIloscWyszukanychAdresatow(int iloscAdresatow);
+    int usunAdresata();
+    int usunWybranegoAdresata();
+    int podajIdWybranegoAdresata();
+    void edytujAdresata();
+    char wybierzOpcjeZMenuEdycja();
 };
 
 #endif
