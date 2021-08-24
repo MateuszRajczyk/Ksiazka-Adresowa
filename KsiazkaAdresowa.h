@@ -5,6 +5,7 @@
 
 #include "UzytkownikMenager.h"
 #include "AdresatMenager.h"
+#include "PlikZAdresatami.h"
 
 using namespace std;
 
@@ -32,8 +33,12 @@ public:
     int pobierzIdZalogowanegoUzytkownika();
     void dodajAdresata();
     void wyswietlWszystkichAdresatow();
+    void wyszukajAdresatowPoImieniu();
+    void wyszukajAdresatowPoNazwisku();
     void wylogowanieUzytkownika();
     void zmianaHaslaZalogowanegoUzytkownika();
+    int usunAdresata();
+    void edytujAdresata();
 
 
 };

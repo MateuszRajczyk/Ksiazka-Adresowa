@@ -2,6 +2,7 @@
 
 char KsiazkaAdresowa::wybierzOpcjeZMenuUzytkownika()
 {
+    MetodyPomocnicze metodyPomocnicze;
     char wybor;
 
     system("cls");
@@ -18,13 +19,14 @@ char KsiazkaAdresowa::wybierzOpcjeZMenuUzytkownika()
     cout << "8. Wyloguj sie" << endl;
     cout << "---------------------------" << endl;
     cout << "Twoj wybor: ";
-    wybor = uzytkownikMenager.wczytajZnak();
+    wybor = metodyPomocnicze.wczytajZnak();
 
     return wybor;
 }
 
 char KsiazkaAdresowa::wybierzOpcjeZMenuGlownego()
 {
+    MetodyPomocnicze metodyPomocnicze;
     char wybor;
 
     system("cls");
@@ -35,7 +37,7 @@ char KsiazkaAdresowa::wybierzOpcjeZMenuGlownego()
     cout << "9. Koniec programu" << endl;
     cout << "---------------------------" << endl;
     cout << "Twoj wybor: ";
-    wybor = uzytkownikMenager.wczytajZnak();
+    wybor = metodyPomocnicze.wczytajZnak();
 
     return wybor;
 }
@@ -85,6 +87,22 @@ void KsiazkaAdresowa::dodajAdresata()
      }
  }
 
+ void KsiazkaAdresowa::wyszukajAdresatowPoImieniu()
+ {
+     if(uzytkownikMenager.czyUzytkownikJestZalogowany())
+     {
+         adresatMenager->wyszukajAdresatowPoImieniu();
+     }
+ }
+
+ void KsiazkaAdresowa::wyszukajAdresatowPoNazwisku()
+ {
+     if(uzytkownikMenager.czyUzytkownikJestZalogowany())
+     {
+         adresatMenager->wyszukajAdresatowPoNazwisku();
+     }
+ }
+
  void KsiazkaAdresowa::wylogowanieUzytkownika()
  {
      uzytkownikMenager.wylogowanieUzytkownika();
@@ -96,6 +114,18 @@ void KsiazkaAdresowa::dodajAdresata()
  {
     uzytkownikMenager.zmianaHaslaZalogowanegoUzytkownika();
  }
+
+int KsiazkaAdresowa::usunAdresata()
+ {
+    adresatMenager->usunWybranegoAdresata();
+ }
+
+void KsiazkaAdresowa::edytujAdresata()
+ {
+    adresatMenager->edytujAdresata();
+ }
+
+
 
 
 
