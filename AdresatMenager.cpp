@@ -158,41 +158,44 @@ void AdresatMenager::wyswietlIloscWyszukanychAdresatow(int iloscAdresatow)
 
 int AdresatMenager::usunWybranegoAdresata()
 {
-    plikZAdresatami.ustawIdUsunietegoAdresata(usunAdresata());
+    usunAdresata();
 
-    if (plikZAdresatami.pobierzIdUsunietegoAdresata() == plikZAdresatami.pobierzIdOstatniegoAdresata())
+    if (idUsunietegoAdresata == plikZAdresatami.pobierzIdOstatniegoAdresata())
+    {
         return plikZAdresatami.pobierzZPlikuIdOstatniegoAdresata();
+    }
     else
+    {
         return plikZAdresatami.pobierzIdOstatniegoAdresata();
+    }
 }
 
 int AdresatMenager::usunAdresata()
 {
     MetodyPomocnicze metodyPomocnicze;
-    int idUsuwanegoAdresata = 0;
-    int numerLiniiUsuwanegoAdresata = 0;
+    idUsunietegoAdresata = 0;
 
     system("cls");
     cout << ">>> USUWANIE WYBRANEGO ADRESATA <<<" << endl << endl;
-    idUsuwanegoAdresata = podajIdWybranegoAdresata();
+    idUsunietegoAdresata = podajIdWybranegoAdresata();
 
     char znak;
     bool czyIstniejeAdresat = false;
 
     for (vector <Adresat>::iterator itr = adresaci.begin(); itr != adresaci.end(); itr++)
     {
-        if (itr -> pobierzId() == idUsuwanegoAdresata)
+        if (itr -> pobierzId() == idUsunietegoAdresata)
         {
             czyIstniejeAdresat = true;
             cout << endl << "Potwierdz naciskajac klawisz 't': ";
             znak = metodyPomocnicze.wczytajZnak();
             if (znak == 't')
             {
-                plikZAdresatami.usunWybranaLinieWPliku(idUsuwanegoAdresata);
+                plikZAdresatami.usunWybranaLinieWPliku(idUsunietegoAdresata);
                 adresaci.erase(itr);
                 cout << endl << endl << "Szukany adresat zostal USUNIETY" << endl << endl;
                 system("pause");
-                return idUsuwanegoAdresata;
+                return idUsunietegoAdresata;
             }
             else
             {
@@ -225,7 +228,6 @@ void AdresatMenager::edytujAdresata()
     system("cls");
     Adresat adresat;
     int idEdytowanegoAdresata = 0;
-    int numerLiniiEdytowanegoAdresata = 0;
     string liniaZDanymiAdresata = "";
 
     cout << ">>> EDYCJA WYBRANEGO ADRESATA <<<" << endl << endl;

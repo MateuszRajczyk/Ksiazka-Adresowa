@@ -13,7 +13,6 @@ public:
     string pobierzLiczbe(string tekst, int pozycjaZnaku);
     string wczytajLinie();
     string zamienPierwszaLitereNaDuzaAPozostaleNaMale(string tekst);
-    bool czyPlikJestPusty(const string nazwaPliku);
     char wczytajZnak();
     int wczytajLiczbeCalkowita();
 };
