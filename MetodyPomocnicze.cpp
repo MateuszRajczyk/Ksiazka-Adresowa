@@ -49,14 +49,6 @@ string MetodyPomocnicze::zamienPierwszaLitereNaDuzaAPozostaleNaMale(string tekst
     return tekst;
 }
 
-bool MetodyPomocnicze::czyPlikJestPusty(const string nazwaPliku)
-{
-    if (ifstream(nazwaPliku, ios::ate).tellg())
-        return false;
-    else
-        return true;
-}
-
 char MetodyPomocnicze::wczytajZnak()
 {
     string wejscie = "";

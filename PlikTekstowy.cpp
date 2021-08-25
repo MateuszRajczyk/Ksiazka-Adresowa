@@ -1,13 +1,8 @@
     #include "PlikTekstowy.h"
 
-    string PlikTekstowy::pobierzNazwePlikuZUzytkownikami()
+    string PlikTekstowy::pobierzNazwePliku()
     {
-        return NAZWA_PLIKU_Z_UZYTKOWNIKAMI;
-    }
-
-    string PlikTekstowy::pobierzNazwePlikuZAdresatami()
-    {
-        return NAZWA_PLIKU_Z_ADRESATAMI;
+        return NAZWA_PLIKU;
     }
 
     bool PlikTekstowy::czyPlikJestPusty(const string nazwaPliku)

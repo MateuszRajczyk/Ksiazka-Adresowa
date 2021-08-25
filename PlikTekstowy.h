@@ -16,17 +16,14 @@ using namespace std;
 
 class PlikTekstowy
 {
-    const string NAZWA_PLIKU_Z_UZYTKOWNIKAMI;
-    const string NAZWA_PLIKU_Z_ADRESATAMI;
+    const string NAZWA_PLIKU;
 
 public:
 
-    PlikTekstowy(string nazwaPlikuZUzytkownikami, string nazwaPlikuZAdresatami) : NAZWA_PLIKU_Z_UZYTKOWNIKAMI(nazwaPlikuZUzytkownikami), NAZWA_PLIKU_Z_ADRESATAMI(nazwaPlikuZAdresatami) {
+    PlikTekstowy(string nazwaPliku) : NAZWA_PLIKU(nazwaPliku) {
     }
 
-    string pobierzNazwePlikuZUzytkownikami();
-
-    string pobierzNazwePlikuZAdresatami();
+    string pobierzNazwePliku();
 
     bool czyPlikJestPusty(const string nazwaPliku);
 
