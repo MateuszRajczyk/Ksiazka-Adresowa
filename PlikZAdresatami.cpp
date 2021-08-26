@@ -172,6 +172,10 @@ int PlikZAdresatami::pobierzZPlikuIdOstatniegoAdresata()
     {
         idOstatniegoAdresata = pobierzIdAdresataZDanychOddzielonychPionowymiKreskami(daneOstaniegoAdresataWPliku);
     }
+    else
+    {
+        idOstatniegoAdresata = 0;
+    }
     return idOstatniegoAdresata;
 }
 
