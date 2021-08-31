@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>11</zoom_level>
+  <zoom_level>4</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>792</x>
+      <x>324</x>
       <y>0</y>
-      <w>363</w>
-      <h>275</h>
+      <w>132</w>
+      <h>128</h>
     </coordinates>
     <panel_attributes>KsiazkaAdresowa
 -
@@ -23,18 +23,21 @@
 + pobierzIdZalogowanegoUzytkownika(): Integer
 + dodajAdresata(): Void
 + wyswietlWszystkichAdresatow(): Void
++ wyszukajAdresatowPoImieniu(): Void
++ wyszukajAdresatowPoNazwisku(): Void
 + wylogowanieUzytkownika(): Void
 + zmianaHaslaZalogowanegoUzytkownika(): Void
-</panel_attributes>
++ usunAdresata(): Integer
++ edytujAdresata(): Void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>22</x>
-      <y>484</y>
-      <w>154</w>
-      <h>121</h>
+      <x>88</x>
+      <y>196</y>
+      <w>56</w>
+      <h>44</h>
     </coordinates>
     <panel_attributes>Uzytkownik
 -
@@ -46,10 +49,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>451</x>
-      <y>374</y>
-      <w>506</w>
-      <h>341</h>
+      <x>200</x>
+      <y>156</y>
+      <w>184</w>
+      <h>124</h>
     </coordinates>
     <panel_attributes>UzytkownikMenager
 -
@@ -76,14 +79,13 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1067</x>
-      <y>407</y>
-      <w>605</w>
-      <h>198</h>
+      <x>424</x>
+      <y>168</y>
+      <w>220</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>PlikZUzytkownikami
 -
-- NAZWA_PLIKU_Z_UZYTKOWNIKAMI: Const String
 -
 - zamienDaneUzytkownikaNaLinieZDanymiOddzielonaPionowymiKreskami(): String
 - pobierzDaneUzytkownika(): Uzytkownik
@@ -96,10 +98,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>594</x>
-      <y>1232</y>
-      <w>429</w>
-      <h>154</h>
+      <x>188</x>
+      <y>480</y>
+      <w>156</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>MetodyPomocnicze
 -
@@ -109,16 +111,17 @@
 + pobierzLiczbe(): String
 + wczytajLinie(): String
 + zamienPierwszaLitereNaDuzaAPozostaleNaMale(): String
-+ czyPlikJestPusty(): Bool</panel_attributes>
++ wczytajZnak(): Char
++ wczytajLiczbeCalkowita(): Integer</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>891</y>
-      <w>275</w>
-      <h>198</h>
+      <x>36</x>
+      <y>344</y>
+      <w>100</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>Adresat
 -
@@ -135,35 +138,42 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>462</x>
-      <y>902</y>
-      <w>418</w>
-      <h>187</h>
+      <x>204</x>
+      <y>336</y>
+      <w>152</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>AdresatMenager
 -
 - ID_ZALOGOWANEGO_UZYTKOWNIKA: Const Integer
 - adresaci: vector&lt;Adresat&gt;
+- idUsunietegoUzytkownika: Integer
 -
 - podajDaneNowegoAdresata(): Adresat
 - wyswietlDaneAdresata(): Void
 + AdresatMenager()
 + dodajAdresata(): Void
 + wyswietlWszystkichAdresatow(): Void
++ wyszukajAdresatowPoImieniu(): Void
++ wyszukajAdresatowPoNazwisku(): Void
++ wyswietlIloscWyszukanychAdresatow(): Void
++ usunAdresata(): Integer
++ usunWybranegoAdresata(): Integer
++ edytujAdresata(): Void
++ wybierzOpcjeZMenuEdycja(): Char
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1012</x>
-      <y>891</y>
-      <w>583</w>
-      <h>231</h>
+      <x>404</x>
+      <y>324</y>
+      <w>212</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>PlikZAdresatami
 -
-- NAZWA_PLIKU_Z_ADRESATAMI: Const String
 - idOstatniegoAdresata: Integer
 -
 - zamienDaneAdresataNaLinieZDanymiOddzielonaPionowymiKreskami(): String
@@ -173,7 +183,186 @@
 + PlikZAdresatami()
 + dopiszAdresataDoPliku(): Bool
 + wczytajAdresatowZalogowanegoUzytkownikaZPliku(): vector&lt;Adresat&gt;
-+ pobierzIdOstatniegoAdresata(): Integer</panel_attributes>
++ pobierzIdOstatniegoAdresata(): Integer
++ ustawIdOstatniegoAdresata(): Integer
++ pobierzZPlikuIdOstatniegoAdresata(): Integer
++ usunWybranaLinieWPliku(): Void
++ usunPlik(): Void
++ zmienNazwePliku(): Void
++ zaktualizujDaneWybranegoAdresata(): Void
++ edytujWybranaLinieWPliku(): Void</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>508</x>
+      <y>440</y>
+      <w>12</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>444</x>
+      <y>480</y>
+      <w>112</w>
+      <h>68</h>
+    </coordinates>
+    <panel_attributes>PlikTekstowy
+-
+- NAZWA_PLIKU: Const String
+-
++ PlikTekstowy()
++ pobierzNazwePliku(): String
++ czyPlikJestPusty(): Bool</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>376</x>
+      <y>236</y>
+      <w>168</w>
+      <h>252</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+layer=2</panel_attributes>
+    <additional_attributes>380.0;610.0;380.0;570.0;10.0;570.0;10.0;160.0;400.0;160.0;400.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>356</x>
+      <y>124</y>
+      <w>12</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>140</x>
+      <y>212</y>
+      <w>68</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>150.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>140</x>
+      <y>140</y>
+      <w>324</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>790.0;70.0;790.0;10.0;60.0;10.0;60.0;170.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>380</x>
+      <y>188</y>
+      <w>52</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>300</x>
+      <y>444</y>
+      <w>12</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>172</x>
+      <y>276</y>
+      <w>68</w>
+      <h>212</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>140.0;10.0;140.0;80.0;10.0;80.0;10.0;480.0;150.0;480.0;150.0;510.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>440</y>
+      <w>96</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>220.0;10.0;220.0;170.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>236</y>
+      <w>168</w>
+      <h>268</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>400.0;10.0;400.0;140.0;70.0;140.0;70.0;650.0;10.0;650.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>352</x>
+      <y>380</y>
+      <w>60</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>132</x>
+      <y>376</y>
+      <w>80</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>180.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>132</x>
+      <y>320</y>
+      <w>280</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>680.0;100.0;640.0;100.0;640.0;10.0;70.0;10.0;70.0;100.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>296</x>
+      <y>124</y>
+      <w>116</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>270.0;10.0;270.0;470.0;10.0;470.0;10.0;530.0</additional_attributes>
   </element>
 </diagram>
