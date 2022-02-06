@@ -8,6 +8,8 @@ We can store recipients data like:
 - email
 - address
 
+Whole application is write in objective C++ language.
+
 Views application:
 
 ![image](https://user-images.githubusercontent.com/82730486/152693985-e323cd52-f783-4bb2-b8e0-e94294f7647d.png)
